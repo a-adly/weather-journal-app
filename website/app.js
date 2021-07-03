@@ -17,8 +17,12 @@ UI.generateBtn.addEventListener('click', callAPI)
 async function callAPI() {
 
     const baseURL = "http://api.openweathermap.org/data/2.5/weather?",
-        zip = UI.zip.value,
-        params = {
+        zip = UI.zip.value;
+    if (isNaN(zip)) {
+        alert('Please check the entered zip code.')
+        return;
+    }
+    const params = {
             zip,
             appid: APIKey,
             units: 'imperial'
@@ -37,7 +41,6 @@ async function callAPI() {
 
     await postData('/add', data)
     retrieveData('/all').then(updateUI)
-
 }
 
 
@@ -74,9 +77,9 @@ async function postData(url = '', data = {}) {
 
 function updateUI(res) {
     try {
-        UI.temp.textContent = res.temperature;
-        UI.content.textContent = res.userResponse;
-        UI.date.textContent = res.date;
+        UI.temp.innerHTML = res.temperature;
+        UI.content.innerHTML = res.userResponse;
+        UI.date.innerHTML = res.date;
     } catch (error) {
         console.log("updateUI error", error);
     }
