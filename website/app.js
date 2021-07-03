@@ -20,7 +20,8 @@ async function callAPI() {
         zip = UI.zip.value,
         params = {
             zip,
-            appid: APIKey
+            appid: APIKey,
+            units: 'imperial'
         },
         query = Object.keys(params).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k])).join('&'),
         url = baseURL + query,
@@ -34,7 +35,8 @@ async function callAPI() {
         userResponse: UI.feelings.value
     }
 
-    postData('/add', data).then(updateUI)
+    await postData('/add', data)
+    retrieveData('/all').then(updateUI)
 
 }
 
@@ -83,5 +85,5 @@ function updateUI(res) {
 
 function getCurrentDate() {
     let d = new Date();
-    return d.getMonth() + '.' + d.getDate() + '.' + d.getFullYear();
+    return (d.getMonth() + 1) + '.' + d.getDate() + '.' + d.getFullYear();
 }
